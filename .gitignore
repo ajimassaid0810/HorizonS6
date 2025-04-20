@@ -1,0 +1,52 @@
+# Node modules (umum)
+node_modules/
+
+# Environment files
+.env
+.env.* 
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Output directories
+dist/
+build/
+
+# Frontend (Next.js, Vite, React, Vue, etc.)
+.next/
+out/
+coverage/
+*.tsbuildinfo
+.cache/
+public/build/
+.svelte-kit/
+turbo/
+
+# Backend
+logs/
+uploads/
+tmp/
+temp/
+
+# Package managers
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Optional: ignore local Docker and services
+docker-compose.override.yml
+.docker/
+
+# Optional: ignore database dumps
+*.sqlite
+*.db
+dump.sql
