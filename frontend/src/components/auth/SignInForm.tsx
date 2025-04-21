@@ -5,10 +5,44 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+import { useNavigate } from "react-router";
+import { signIn } from "../../services/AuthServices";
 
-export default function SignInForm() {
+interface SignInFormProps {
+  setIsLoading: (loading: boolean) => void;
+}
+   
+
+export default function SignInForm({ setIsLoading }: SignInFormProps) {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent form submission and page reload
+    setIsLoading(true); // Show loading spinner
+
+    try {
+      const result = await signIn({ email, password });
+      console.log("Login berhasil:", result);
+      const token = result.data.token;
+      const userData = result.data.user;  // Save user data
+  
+      // Save the token and user data to localStorage
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("userData", JSON.stringify(userData)); // Store user data as JSON string
+  
+      navigate("/"); // Redirect to home/dashboard after login
+    } catch (err) {
+      console.error("Gagal login:", err);
+      // Optionally, show an error message to the user here
+    } finally {
+      setIsLoading(false); // Hide loading spinner after the process is done
+    }
+  };
+
 
   return (
     <div className="flex flex-col flex-1">
@@ -33,13 +67,13 @@ export default function SignInForm() {
             </p>
           </div>
 
-          <form>
+          <form onSubmit={handleSignIn}>
             <div className="space-y-6">
               <div>
                 <Label>
                   Email <span className="text-error-500">*</span>
                 </Label>
-                <Input placeholder="you@landchine.com" />
+                <Input placeholder="you@landchine.com" onChange={(e)=>setEmail(e.target.value)} />
               </div>
 
               <div>
@@ -50,6 +84,7 @@ export default function SignInForm() {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your secure password"
+                    onChange={(e)=>setPassword(e.target.value)}
                   />
                   <span
                     onClick={() => setShowPassword(!showPassword)}
@@ -80,7 +115,7 @@ export default function SignInForm() {
               </div>
 
               <div>
-                <Button className="w-full" size="sm">
+                <Button className="w-full" size="sm" type="submit">
                   Sign In
                 </Button>
               </div>
