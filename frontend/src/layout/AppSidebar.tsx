@@ -16,20 +16,30 @@ import {
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
+  roles?: string[];
   path?: string;
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
 const navItems: NavItem[] = [
+ 
   {
     icon: <GridIcon />,
     name: "Dashboard",
+    roles:['pemohon'],
     subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+  },
+  {
+    icon: <GridIcon />,
+    name: "Verifikasi",
+    subItems: [
+      { name: "Kecamatan", path: "/verifikasikecamatan", pro: false },
+      { name: "Provinsi", path: "/", pro: false }
+    ],
   },
   {
     icon: <CalenderIcon />,
