@@ -19,6 +19,7 @@ export default function SignInForm({ setIsLoading }: SignInFormProps) {
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent form submission and page reload
@@ -35,9 +36,11 @@ export default function SignInForm({ setIsLoading }: SignInFormProps) {
       localStorage.setItem("userData", JSON.stringify(userData)); // Store user data as JSON string
   
       navigate("/"); // Redirect to home/dashboard after login
-    } catch (err) {
+    }  catch (err: any) {
       console.error("Gagal login:", err);
-      // Optionally, show an error message to the user here
+    
+      const message = err?.response?.data?.message || "Email atau password salah";
+      setErrorMessage(message);
     } finally {
       setIsLoading(false); // Hide loading spinner after the process is done
     }
@@ -98,6 +101,11 @@ export default function SignInForm({ setIsLoading }: SignInFormProps) {
                   </span>
                 </div>
               </div>
+              {errorMessage && (
+  <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 border border-red-400 rounded">
+    {errorMessage}
+  </div>
+)}
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
