@@ -26,8 +26,9 @@ export default function SelectInputs() {
     <ComponentCard title="Select Inputs">
       <div className="space-y-6">
         <div>
-          <Label>Select Input</Label>
+        <Label htmlFor="select-input">Select Input</Label>
           <Select
+            id="select-input"
             options={options}
             placeholder="Select Option"
             onChange={handleSelectChange}
