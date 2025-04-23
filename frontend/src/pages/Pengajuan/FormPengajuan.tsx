@@ -10,15 +10,24 @@ import Label from "../../components/form/Label";
 import { useState } from "react";
 
 export default function FormPengajuan() {
-  const [formData, setFormData] = useState({
-    nama: "",
-    nik: "",
-    alamat: "",
-    statusTanah: "",
-    berkas: null,
-    setuju: false,
-    tanggal: null,
-  });
+    const [formData, setFormData] = useState<{
+        nama: string;
+        nik: string;
+        alamat: string;
+        statusTanah: string;
+        berkas: File | null;
+        setuju: boolean;
+        tanggal: Date | null; // ← tambahkan tipe ini!
+      }>({
+        nama: "",
+        nik: "",
+        alamat: "",
+        statusTanah: "",
+        berkas: null,
+        setuju: false,
+        tanggal: null,
+      });
+      
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log("Data yang dikirim:", formData);
@@ -48,22 +57,24 @@ export default function FormPengajuan() {
           onChange={(e) => setFormData({ ...formData, nik: e.target.value })}
         />
 
-        <TextArea
-          label="Alamat Lengkap"
-          id="alamat"
-          value={formData.alamat}
-          onChange={(e) => setFormData({ ...formData, alamat: e.target.value })}
-        />
+            <TextArea
+            label="Alamat Lengkap"
+            id="alamat"
+            value={formData.alamat}
+            onChange={(value) =>
+                setFormData({ ...formData, alamat: value })
+            }
+            />
 
-        <SelectInput
-          label="Status Tanah"
-          id="statusTanah"
-          options={["Milik Sendiri", "Sewa", "Waris"]}
-          value={formData.statusTanah}
-          onChange={(e) =>
-            setFormData({ ...formData, statusTanah: e.target.value })
-          }
-        />
+            <SelectInput
+            label="Status Tanah"
+            id="statusTanah"
+            options={["Milik Sendiri", "Sewa", "Waris"]}
+            value={formData.statusTanah}
+            onChange={(value) =>
+                setFormData({ ...formData, statusTanah: value })
+            }
+            />
 
         <DatePicker
           id="tanggal"
@@ -86,9 +97,9 @@ export default function FormPengajuan() {
           label="Saya menyetujui syarat dan ketentuan"
           id="setuju"
           checked={formData.setuju}
-          onChange={(e) =>
-            setFormData({ ...formData, setuju: e.target.checked })
-          }
+          onChange={(checked) =>
+            setFormData({ ...formData, setuju: checked })
+          }          
         />
 
         <button
