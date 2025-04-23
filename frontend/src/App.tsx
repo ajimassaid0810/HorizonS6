@@ -20,6 +20,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import LandCertificateDAppLanding from "./pages/LandingPage/LandingPage";
 import { AuthProvider } from "./context/AuthContext";
+import FormPengajuan from "./pages/Pengajuan/FormPengajuan";
 
 export default function App() {
   // const isLoggedIn = !(localStorage.getItem("token")!=''|| localStorage.getItem("token")!= undefined) ;
@@ -37,6 +38,7 @@ export default function App() {
               <Route path="/profile" element={<UserProfiles />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/blank" element={<Blank />} />
+              <Route path="/pengajuan" element={<FormPengajuan />} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />

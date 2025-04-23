@@ -34,6 +34,13 @@ const navItems: NavItem[] = [
     subItems: [{ name: "Ecommerce", path: "/", pro: false }],
   },
   {
+    name: "Forms",
+    icon: <ListIcon />,
+    subItems: [
+      { name: "Form Pengajuan", path: "/pengajuan", pro: false } // ✅ Tambahkan ini
+    ],
+  },  
+  {
     icon: <GridIcon />,
     name: "Verifikasi",
     subItems: [
