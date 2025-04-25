@@ -3,35 +3,50 @@ import Form from "../../components/form/Form";
 import InputField from "../../components/form/input/InputField";
 import TextArea from "../../components/form/input/TextArea";
 import SelectInput from "../../components/form/form-elements/SelectInputs";
-import FileInput from "../../components/form/input/FileInput"; // atau DropZone kalau kamu pilih itu
+import FileInput from "../../components/form/input/FileInput";
 import Checkbox from "../../components/form/input/Checkbox";
 import DatePicker from "../../components/form/date-picker";
 import Label from "../../components/form/Label";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function FormPengajuan() {
-    const [formData, setFormData] = useState<{
-        nama: string;
-        nik: string;
-        alamat: string;
-        statusTanah: string;
-        berkas: File | null;
-        setuju: boolean;
-        tanggal: Date | null; // ← tambahkan tipe ini!
-      }>({
-        nama: "",
-        nik: "",
-        alamat: "",
-        statusTanah: "",
-        berkas: null,
-        setuju: false,
-        tanggal: null,
-      });
-      
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<{
+    nama: string;
+    nik: string;
+    alamat: string;
+    statusTanah: string;
+    berkas: File | null;
+    setuju: boolean;
+    tanggal: Date | null;
+  }>({
+    nama: "",
+    nik: "",
+    alamat: "",
+    statusTanah: "",
+    berkas: null,
+    setuju: false,
+    tanggal: null,
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("Data yang dikirim:", formData);
-    // Tambahkan logic kirim ke backend/API di sini
+    e.preventDefault();
+
+    // Simpan data ke localStorage
+    const pengajuanBaru = {
+      ...formData,
+      tanggal: formData.tanggal?.toISOString() || null,
+      berkas: formData.berkas?.name || null, // hanya simpan nama file, karena file nggak bisa disimpan di localStorage
+    };
+
+    const existingData = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");
+    existingData.push(pengajuanBaru);
+    localStorage.setItem("dataPengajuan", JSON.stringify(existingData));
+
+    // Redirect ke halaman riwayat
+    navigate("/riwayat-pengajuan");
   };
 
   return (
@@ -57,24 +72,20 @@ export default function FormPengajuan() {
           onChange={(e) => setFormData({ ...formData, nik: e.target.value })}
         />
 
-            <TextArea
-            label="Alamat Lengkap"
-            id="alamat"
-            value={formData.alamat}
-            onChange={(value) =>
-                setFormData({ ...formData, alamat: value })
-            }
-            />
+        <TextArea
+          label="Alamat Lengkap"
+          id="alamat"
+          value={formData.alamat}
+          onChange={(value) => setFormData({ ...formData, alamat: value })}
+        />
 
-            <SelectInput
-            label="Status Tanah"
-            id="statusTanah"
-            options={["Milik Sendiri", "Sewa", "Waris"]}
-            value={formData.statusTanah}
-            onChange={(value) =>
-                setFormData({ ...formData, statusTanah: value })
-            }
-            />
+        <SelectInput
+          label="Status Tanah"
+          id="statusTanah"
+          options={["Milik Sendiri", "Sewa", "Waris"]}
+          value={formData.statusTanah}
+          onChange={(value) => setFormData({ ...formData, statusTanah: value })}
+        />
 
         <DatePicker
           id="tanggal"
@@ -99,7 +110,7 @@ export default function FormPengajuan() {
           checked={formData.setuju}
           onChange={(checked) =>
             setFormData({ ...formData, setuju: checked })
-          }          
+          }
         />
 
         <button
