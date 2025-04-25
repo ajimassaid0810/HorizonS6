@@ -21,13 +21,14 @@ import Home from "./pages/Dashboard/Home";
 import LandCertificateDAppLanding from "./pages/LandingPage/LandingPage";
 import { AuthProvider } from "./context/AuthContext";
 import FormPengajuan from "./pages/Pengajuan/FormPengajuan";
+import RiwayatPengajuan from "./pages/Pengajuan/RiwayatPengajuan";
 
 export default function App() {
   // const isLoggedIn = !(localStorage.getItem("token")!=''|| localStorage.getItem("token")!= undefined) ;
   return (
     <>
       <Router>
-        <ScrollToTop />
+        <ScrollToTop /> 
         <AuthProvider>
           <Routes>
             {/* Dashboard Layout */}
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/blank" element={<Blank />} />
               <Route path="/pengajuan" element={<FormPengajuan />} />
+              <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />

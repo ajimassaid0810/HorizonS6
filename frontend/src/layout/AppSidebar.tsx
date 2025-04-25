@@ -37,7 +37,8 @@ const navItems: NavItem[] = [
     name: "Forms",
     icon: <ListIcon />,
     subItems: [
-      { name: "Form Pengajuan", path: "/pengajuan", pro: false } // ✅ Tambahkan ini
+      { name: "Form Pengajuan", path: "/pengajuan", pro: false },
+      { name: "Riwayat Pengajuan", path: "/riwayatpengajuan", pro: false } 
     ],
   },  
   {
