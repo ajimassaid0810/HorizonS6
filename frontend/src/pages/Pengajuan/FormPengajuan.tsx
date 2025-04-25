@@ -46,6 +46,7 @@ export default function FormPengajuan() {
     localStorage.setItem("dataPengajuan", JSON.stringify(existingData));
 
     // Redirect ke halaman riwayat
+    alert("Pengajuan berhasil dikirim!");
     navigate("/riwayat-pengajuan");
   };
 
