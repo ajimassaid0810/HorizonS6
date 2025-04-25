@@ -28,7 +28,7 @@ export default function App() {
   return (
     <>
       <Router>
-        <ScrollToTop />
+        <ScrollToTop /> 
         <AuthProvider>
           <Routes>
             {/* Dashboard Layout */}
