@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Table, TableHeader, TableBody, TableRow, TableCell } from "../../components/ui/table";
 import Badge from "../../components/ui/badge/Badge";
 import { Dialog } from "@headlessui/react";
@@ -13,38 +13,26 @@ interface Pengajuan {
   status: "pending" | "approved" | "rejected";
 }
 
-const dummyData: Pengajuan[] = [
-  {
-    id: 1,
-    nama: "Bayu Pratama",
-    nik: "1234567890",
-    alamat: "Jl. Mawar No. 10",
-    statusTanah: "Milik Sendiri",
-    tanggal: "2025-04-20",
-    status: "pending",
-  },
-  {
-    id: 2,
-    nama: "Siti Aminah",
-    nik: "9876543210",
-    alamat: "Jl. Melati No. 5",
-    statusTanah: "Waris",
-    tanggal: "2025-04-18",
-    status: "approved",
-  },
-  {
-    id: 3,
-    nama: "Rian Saputra",
-    nik: "1122334455",
-    alamat: "Jl. Kenanga No. 7",
-    statusTanah: "Sewa",
-    tanggal: "2025-04-15",
-    status: "rejected",
-  },
-];
-
 export default function RiwayatPengajuan() {
+  const [dataPengajuan, setDataPengajuan] = useState<Pengajuan[]>([]);
   const [selectedPengajuan, setSelectedPengajuan] = useState<Pengajuan | null>(null);
+
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");
+
+    // Buat data jadi sesuai dengan interface, misalnya kasih ID dan status default
+    const formattedData: Pengajuan[] = savedData.map((item: any, index: number) => ({
+      id: index + 1,
+      nama: item.nama,
+      nik: item.nik,
+      alamat: item.alamat,
+      statusTanah: item.statusTanah,
+      tanggal: item.tanggal,
+      status: "pending", // default status
+    }));
+
+    setDataPengajuan(formattedData);
+  }, []);
 
   const getStatusBadge = (status: Pengajuan["status"]) => {
     switch (status) {
@@ -76,7 +64,7 @@ export default function RiwayatPengajuan() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {dummyData.map((pengajuan, index) => (
+            {dataPengajuan.map((pengajuan, index) => (
               <TableRow key={pengajuan.id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{pengajuan.nama}</TableCell>
