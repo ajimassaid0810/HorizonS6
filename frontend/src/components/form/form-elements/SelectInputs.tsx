@@ -1,51 +1,51 @@
-import { useState } from "react";
-import ComponentCard from "../../common/ComponentCard";
+import { ChangeEvent, useState } from "react";
 import Label from "../Label";
 import Select from "../Select";
 import MultiSelect from "../MultiSelect";
 
-export default function SelectInputs() {
-  const options = [
-    { value: "marketing", label: "Marketing" },
-    { value: "template", label: "Template" },
-    { value: "development", label: "Development" },
-  ];
-  const handleSelectChange = (value: string) => {
-    console.log("Selected value:", value);
-  };
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+type OptionType = {
+  value: string;
+  label: string;
+};
 
-  const multiOptions = [
-    { value: "1", text: "Option 1", selected: false },
-    { value: "2", text: "Option 2", selected: false },
-    { value: "3", text: "Option 3", selected: false },
-    { value: "4", text: "Option 4", selected: false },
-    { value: "5", text: "Option 5", selected: false },
-  ];
+type SelectInputProps = {
+  label: string;
+  id: string;
+  options: string[] | OptionType[];
+  value: string;
+  onChange: (value: string) => void; // Ubah dari (e: ChangeEvent<HTMLSelectElement>) => void
+  className?: string;
+};
+
+export default function SelectInputs({
+  label,
+  id,
+  options,
+  value,
+  onChange,
+  className,
+}: SelectInputProps) {
+  // Handle opsi berupa array string (["A", "B"]) atau array object ({ value, label })
+  const formattedOptions =
+    typeof options[0] === "string"
+      ? (options as string[]).map((opt) => ({
+          value: opt,
+          label: opt,
+        }))
+      : (options as OptionType[]);
+
   return (
-    <ComponentCard title="Select Inputs">
-      <div className="space-y-6">
-        <div>
-          <Label>Select Input</Label>
-          <Select
-            options={options}
-            placeholder="Select Option"
-            onChange={handleSelectChange}
-            className="dark:bg-dark-900"
-          />
-        </div>
-        <div>
-          <MultiSelect
-            label="Multiple Select Options"
-            options={multiOptions}
-            defaultSelected={["1", "3"]}
-            onChange={(values) => setSelectedValues(values)}
-          />
-          <p className="sr-only">
-            Selected Values: {selectedValues.join(", ")}
-          </p>
-        </div>
-      </div>
-    </ComponentCard>
+    <div className="mb-4">
+      <Label htmlFor={id}>{label}</Label>
+      <Select
+  id={id}
+  value={value}
+  onChange={onChange} // Karena udah (value: string) => void
+  options={formattedOptions}
+  className={className}
+  placeholder="Pilih opsi"
+/>
+
+    </div>
   );
 }

@@ -16,6 +16,8 @@ interface InputProps {
   success?: boolean;
   error?: boolean;
   hint?: string;
+  label?: string;
+  
 }
 
 const Input: FC<InputProps> = ({
@@ -25,10 +27,11 @@ const Input: FC<InputProps> = ({
   placeholder,
   value,
   onChange,
-  className = "",
+  className = "mt-1 block w-full rounded-md border-gray-300 shadow-sm",
   min,
   max,
   step,
+  label,
   disabled = false,
   success = false,
   error = false,
@@ -48,6 +51,9 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="relative">
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+        {label}
+      </label>
       <input
         type={type}
         id={id}
