@@ -30,14 +30,28 @@ export default function VerifikasiKecamatan() {
   }, []);
 
   const handleVerifikasi = () => {
+    if (!selectedKecamatan) return;
     setLoading(true);
-    // Proses verifikasi, bisa menggunakan API atau logika lainnya
+  
     setTimeout(() => {
+      // Ambil data lama
+      const existingData = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");
+  
+      // Update status dari pengajuan yang cocok
+      const updatedData = existingData.map((item: KecamatanData) =>
+        item.nik === selectedKecamatan.nik ? { ...item, statusVerifikasi: "Sudah Diverifikasi" } : item
+      );
+  
+      // Simpan ulang ke localStorage
+      localStorage.setItem("dataPengajuan", JSON.stringify(updatedData));
+      setKecamatanData(updatedData); // Update state
+  
       setLoading(false);
       setAlert("Kecamatan berhasil diverifikasi!");
       setShowModal(false);
-    }, 2000); // Simulasi loading
+    }, 2000);
   };
+  
 
   const handleDetailKecamatan = (data: KecamatanData) => {
     setSelectedKecamatan(data);
@@ -71,18 +85,27 @@ export default function VerifikasiKecamatan() {
       {/* Modal untuk Verifikasi Detail Kecamatan */}
       {showModal && selectedKecamatan && (
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-          <div>
-            <h2 className="text-xl font-semibold">Detail Kecamatan</h2>
-            <p><strong>Nama Kecamatan:</strong> {selectedKecamatan.nama}</p>
-            <p><strong>Alamat:</strong> {selectedKecamatan.alamat}</p>
-            <p><strong>Status Tanah:</strong> {selectedKecamatan.statusTanah}</p>
+        <div>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+            Detail Kecamatan
+          </h2>
+          <p><strong>Nama Kecamatan:</strong> {selectedKecamatan.nama}</p>
+          <p><strong>Alamat:</strong> {selectedKecamatan.alamat}</p>
+          <p><strong>Status Tanah:</strong> {selectedKecamatan.statusTanah}</p>
+
+          <div className="mt-6">
+            <p className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
+              Verifikasi data ini?
+            </p>
             <Button
-              label="Verifikasi"
+              label="Verifikasi Sekarang"
               onClick={handleVerifikasi}
-              className="mt-4"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
             />
           </div>
-        </Modal>
+        </div>
+      </Modal>
+
       )}
 
       {/* Tombol untuk kembali ke halaman sebelumnya */}
