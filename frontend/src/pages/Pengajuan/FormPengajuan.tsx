@@ -8,7 +8,7 @@ import Checkbox from "../../components/form/input/Checkbox";
 import DatePicker from "../../components/form/date-picker";
 import Label from "../../components/form/Label";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export default function FormPengajuan() {
   const navigate = useNavigate();
