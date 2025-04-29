@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 interface TableProps {
   children: ReactNode; // Table content (thead, tbody, etc.)
   className?: string; // Optional className for styling
+  colSpan?: number; // ✅ Tambahkan ini
 }
 
 // Props for TableHeader
@@ -29,6 +30,7 @@ interface TableCellProps {
   children: ReactNode; // Cell content
   isHeader?: boolean; // If true, renders as <th>, otherwise <td>
   className?: string; // Optional className for styling
+  colSpan?: number;
 }
 
 // Table Component
@@ -55,6 +57,7 @@ const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
 const TableCell: React.FC<TableCellProps> = ({
   children,
   isHeader = false,
+  colSpan,
   className,
 }) => {
   const CellTag = isHeader ? "th" : "td";

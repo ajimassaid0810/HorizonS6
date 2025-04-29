@@ -5,15 +5,23 @@ import BasicTableOne from "../../components/tables/BasicTables/BasicTableOne";
 import Button from "../../components/ui/button/Button";
 import Alert from "../../components/ui/alert/Alert";
 import Loading from "../../components/ui/loading/Loading";
-import { Modal } from "../../components/ui/modal/index"; // Ubah import sesuai lokasi
+import { Modal } from "../../components/ui/modal/index";
+
+// Interface untuk data kecamatan
+interface KecamatanData {
+  nama: string;
+  alamat: string;
+  statusTanah: string;
+  [key: string]: any; // Untuk properti tambahan yang mungkin ada
+}
 
 export default function VerifikasiKecamatan() {
   const navigate = useNavigate();
-  const [kecamatanData, setKecamatanData] = useState<any[]>([]); // Data kecamatan yang diajukan
+  const [kecamatanData, setKecamatanData] = useState<KecamatanData[]>([]); // Data kecamatan yang diajukan
   const [loading, setLoading] = useState<boolean>(false); // Status loading untuk verifikasi
   const [alert, setAlert] = useState<string | null>(null); // Notifikasi status verifikasi
   const [showModal, setShowModal] = useState<boolean>(false); // Modal verifikasi detail
-  const [selectedKecamatan, setSelectedKecamatan] = useState<any>(null); // Data kecamatan yang dipilih
+  const [selectedKecamatan, setSelectedKecamatan] = useState<KecamatanData | null>(null); // Data kecamatan yang dipilih
 
   useEffect(() => {
     // Ambil data kecamatan yang telah diajukan dari localStorage
@@ -31,7 +39,7 @@ export default function VerifikasiKecamatan() {
     }, 2000); // Simulasi loading
   };
 
-  const handleDetailKecamatan = (data: any) => {
+  const handleDetailKecamatan = (data: KecamatanData) => {
     setSelectedKecamatan(data);
     setShowModal(true);
   };
@@ -43,7 +51,13 @@ export default function VerifikasiKecamatan() {
       </h1>
 
       {/* Alert jika ada status */}
-      {alert && <Alert message={alert} onClose={() => setAlert(null)} />}
+      {alert && (
+        <Alert 
+          variant="success"
+          message={alert} 
+          onClose={() => setAlert(null)} 
+        />
+      )}
 
       {/* Loading Indicator */}
       {loading && <Loading isOpen={loading} />}
@@ -63,11 +77,10 @@ export default function VerifikasiKecamatan() {
             <p><strong>Alamat:</strong> {selectedKecamatan.alamat}</p>
             <p><strong>Status Tanah:</strong> {selectedKecamatan.statusTanah}</p>
             <Button
+              label="Verifikasi"
               onClick={handleVerifikasi}
               className="mt-4"
-            >
-              Verifikasi
-            </Button>
+            />
           </div>
         </Modal>
       )}
