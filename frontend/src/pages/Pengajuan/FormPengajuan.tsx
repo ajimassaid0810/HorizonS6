@@ -39,6 +39,7 @@ export default function FormPengajuan() {
       ...formData,
       tanggal: formData.tanggal?.toISOString() || null,
       berkas: formData.berkas?.name || null, // hanya simpan nama file, karena file nggak bisa disimpan di localStorage
+      statusVerifikasi: "Belum Diverifikasi",
     };
 
     const existingData = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");
