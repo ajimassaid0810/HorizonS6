@@ -1,6 +1,6 @@
 // pages/kecamatan/VerifikasiKecamatan.tsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import BasicTableOne from "../../components/tables/BasicTables/BasicTableOne";
 import Button from "../../components/ui/button/Button";
 import Alert from "../../components/ui/alert/Alert";
