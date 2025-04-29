@@ -12,8 +12,11 @@ interface KecamatanData {
   nama: string;
   alamat: string;
   statusTanah: string;
-  [key: string]: any; // Untuk properti tambahan yang mungkin ada
+  statusVerifikasi?: string;
+  nik?: string; // jika kamu pakai nik sebagai ID
+  [key: string]: any;
 }
+
 
 export default function VerifikasiKecamatan() {
   const navigate = useNavigate();
@@ -34,23 +37,22 @@ export default function VerifikasiKecamatan() {
     setLoading(true);
   
     setTimeout(() => {
-      // Ambil data lama
-      const existingData = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");
+      const existingData: KecamatanData[] = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");
   
-      // Update status dari pengajuan yang cocok
-      const updatedData = existingData.map((item: KecamatanData) =>
-        item.nik === selectedKecamatan.nik ? { ...item, statusVerifikasi: "Sudah Diverifikasi" } : item
+      const updatedData = existingData.map((item) =>
+        item.nik === selectedKecamatan.nik
+          ? { ...item, statusVerifikasi: "Sudah Diverifikasi" }
+          : item
       );
   
-      // Simpan ulang ke localStorage
       localStorage.setItem("dataPengajuan", JSON.stringify(updatedData));
-      setKecamatanData(updatedData); // Update state
-  
+      setKecamatanData(updatedData);
       setLoading(false);
-      setAlert("Kecamatan berhasil diverifikasi!");
+      setAlert("✅ Kecamatan berhasil diverifikasi!");
       setShowModal(false);
     }, 2000);
   };
+  
   
 
   const handleDetailKecamatan = (data: KecamatanData) => {
@@ -95,15 +97,22 @@ export default function VerifikasiKecamatan() {
             <p><span className="font-semibold">Alamat:</span> {selectedKecamatan.alamat}</p>
             <p><span className="font-semibold">Status Tanah:</span> {selectedKecamatan.statusTanah}</p>
           </div>
-      
           <div className="pt-4">
-          <button
+                    <button
             onClick={handleVerifikasi}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow disabled:opacity-50"
+            disabled={selectedKecamatan.statusVerifikasi === "Sudah Diverifikasi"}
           >
             ✅ Verifikasi data ini
           </button>
-
+          <p>
+            <span className="font-semibold">Status Verifikasi:</span>{" "}
+            {selectedKecamatan.statusVerifikasi === "Sudah Diverifikasi" ? (
+              <span className="text-green-600 font-semibold">✅ Diverifikasi</span>
+            ) : (
+              <span className="text-red-500 font-semibold">❌ Belum</span>
+            )}
+          </p>
           </div>
         </div>
       </Modal>      
