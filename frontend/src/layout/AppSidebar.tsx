@@ -40,7 +40,12 @@ const navItems: NavItem[] = [
       { name: "Form Pengajuan", path: "/pengajuan", pro: false },
       { name: "Riwayat Pengajuan", path: "/riwayat-pengajuan", pro: false } 
     ],
-  },  
+  }, 
+  {
+    name: "Verifikasi Admin",
+    icon: <GridIcon />,
+    subItems: [{ name: "Verifikasi", path: "/verifikasi-kecamatan", pro: false }],
+  }, 
   {
     icon: <GridIcon />,
     name: "Verifikasi",
