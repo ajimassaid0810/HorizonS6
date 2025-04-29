@@ -85,26 +85,28 @@ export default function VerifikasiKecamatan() {
       {/* Modal untuk Verifikasi Detail Kecamatan */}
       {showModal && selectedKecamatan && (
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <div>
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
             Detail Kecamatan
           </h2>
-          <p><strong>Nama Kecamatan:</strong> {selectedKecamatan.nama}</p>
-          <p><strong>Alamat:</strong> {selectedKecamatan.alamat}</p>
-          <p><strong>Status Tanah:</strong> {selectedKecamatan.statusTanah}</p>
+      
+          <div className="space-y-2 text-gray-700 dark:text-gray-200">
+            <p><span className="font-semibold">Nama Kecamatan:</span> {selectedKecamatan.nama}</p>
+            <p><span className="font-semibold">Alamat:</span> {selectedKecamatan.alamat}</p>
+            <p><span className="font-semibold">Status Tanah:</span> {selectedKecamatan.statusTanah}</p>
+          </div>
+      
+          <div className="pt-4">
+          <button
+            onClick={handleVerifikasi}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow"
+          >
+            ✅ Verifikasi data ini
+          </button>
 
-          <div className="mt-6">
-            <p className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
-              Verifikasi data ini?
-            </p>
-            <Button
-              label="Verifikasi Sekarang"
-              onClick={handleVerifikasi}
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
-            />
           </div>
         </div>
-      </Modal>
+      </Modal>      
 
       )}
 
