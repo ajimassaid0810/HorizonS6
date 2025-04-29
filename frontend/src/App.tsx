@@ -22,6 +22,7 @@ import LandCertificateDAppLanding from "./pages/LandingPage/LandingPage";
 import { AuthProvider } from "./context/AuthContext";
 import FormPengajuan from "./pages/Pengajuan/FormPengajuan";
 import RiwayatPengajuan from "./pages/Pengajuan/RiwayatPengajuan";
+import VerifikasiKecamatan from "./pages/Verifikasi/VerifikasiKecamatan";
 
 export default function App() {
   // const isLoggedIn = !(localStorage.getItem("token")!=''|| localStorage.getItem("token")!= undefined) ;
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/blank" element={<Blank />} />
               <Route path="/pengajuan" element={<FormPengajuan />} />
               <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
+              <Route path="/verifikasi-kecamatan" element={<VerifikasiKecamatan />} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />
