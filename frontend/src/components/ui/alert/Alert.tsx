@@ -1,21 +1,23 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 interface AlertProps {
-  variant: "success" | "error" | "warning" | "info"; // Alert type
-  title: string; // Title of the alert
+  variant?: "success" | "error" | "warning" | "info"; // Alert type (opsional)
+  title?: string; // Title of the alert (opsional)
   message: string; // Message of the alert
   showLink?: boolean; // Whether to show the "Learn More" link
   linkHref?: string; // Link URL
   linkText?: string; // Link text
+  onClose?: () => void; // Tambahan: Callback untuk menutup alert
 }
 
 const Alert: React.FC<AlertProps> = ({
-  variant,
+  variant = "success",
   title,
   message,
   showLink = false,
   linkHref = "#",
   linkText = "Learn more",
+  onClose,
 }) => {
   // Tailwind classes for each variant
   const variantClasses = {
@@ -113,7 +115,7 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     <div
-      className={`rounded-xl border p-4 ${variantClasses[variant].container}`}
+      className={`relative rounded-xl border p-4 ${variantClasses[variant].container}`}
     >
       <div className="flex items-start gap-3">
         <div className={`-mt-0.5 ${variantClasses[variant].icon}`}>
@@ -121,9 +123,11 @@ const Alert: React.FC<AlertProps> = ({
         </div>
 
         <div>
-          <h4 className="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
-            {title}
-          </h4>
+          {title && (
+            <h4 className="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+              {title}
+            </h4>
+          )}
 
           <p className="text-sm text-gray-500 dark:text-gray-400">{message}</p>
 
@@ -137,6 +141,27 @@ const Alert: React.FC<AlertProps> = ({
           )}
         </div>
       </div>
+
+      {/* Tombol tutup jika onClose tersedia */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+          aria-label="Close"
+        >
+          <svg
+            className="w-4 h-4 fill-current"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M10 8.586L13.293 5.293C13.683 4.902 14.317 4.902 14.707 5.293C15.098 5.683 15.098 6.317 14.707 6.707L11.414 10L14.707 13.293C15.098 13.683 15.098 14.317 14.707 14.707C14.317 15.098 13.683 15.098 13.293 14.707L10 11.414L6.707 14.707C6.317 15.098 5.683 15.098 5.293 14.707C4.902 14.317 4.902 13.683 5.293 13.293L8.586 10L5.293 6.707C4.902 6.317 4.902 5.683 5.293 5.293C5.683 4.902 6.317 4.902 6.707 5.293L10 8.586Z"
+            />
+          </svg>
+        </button>
+      )}
     </div>
   );
 };
