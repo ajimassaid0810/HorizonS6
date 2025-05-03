@@ -8,20 +8,26 @@ import Checkbox from "../../components/form/input/Checkbox";
 import DatePicker from "../../components/form/date-picker";
 import Label from "../../components/form/Label";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+
 import { useNavigate } from 'react-router';
 
 export default function FormPengajuan() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<{
+    _id:string;
     nama: string;
     nik: string;
     alamat: string;
     statusTanah: string;
     berkas: File | null;
     setuju: boolean;
+    status: "pending" | "approved" | "rejected";
     tanggal: Date | null;
+    isGenerate: boolean;
   }>({
+    _id:"",
     nama: "",
     nik: "",
     alamat: "",
@@ -29,6 +35,8 @@ export default function FormPengajuan() {
     berkas: null,
     setuju: false,
     tanggal: null,
+    status: "pending" ,
+    isGenerate:false
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,9 +45,9 @@ export default function FormPengajuan() {
     // Simpan data ke localStorage
     const pengajuanBaru = {
       ...formData,
+      _id: uuidv4(),
       tanggal: formData.tanggal?.toISOString() || null,
       berkas: formData.berkas?.name || null, // hanya simpan nama file, karena file nggak bisa disimpan di localStorage
-      statusVerifikasi: "Belum Diverifikasi",
     };
 
     const existingData = JSON.parse(localStorage.getItem("dataPengajuan") || "[]");

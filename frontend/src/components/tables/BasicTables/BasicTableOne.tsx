@@ -10,10 +10,11 @@ import Badge from "../../ui/badge/Badge";
 
 // Interface untuk data kecamatan
 interface KecamatanData {
+  _id:string;
   nama: string;
   alamat: string;
   statusTanah: string;
-  statusVerifikasi?: string;
+  status?: string;
   [key: string]: any;
 }
 
@@ -41,9 +42,10 @@ const BasicTableOne: React.FC<BasicTableOneProps> = ({ data, onDetail }) => {
               <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                 Status Verifikasi
               </TableCell>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 w-[200px]">
                 Aksi
               </TableCell>
+
             </TableRow>
           </TableHeader>
 
@@ -80,7 +82,7 @@ const BasicTableOne: React.FC<BasicTableOneProps> = ({ data, onDetail }) => {
                     </Badge>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-start">
-                    {item.statusVerifikasi === "Sudah Diverifikasi" ? (
+                    {item.status === "approved" ? (
                       <span className="text-green-600 font-semibold flex items-center gap-1">
                         ✅ Diverifikasi
                       </span>
@@ -93,10 +95,11 @@ const BasicTableOne: React.FC<BasicTableOneProps> = ({ data, onDetail }) => {
                   <TableCell className="px-4 py-3 text-start">
                     <button
                       onClick={() => onDetail(item)}
-                      className="px-3 py-1 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                      className="px-3 py-1 text-sm text-blue-600 hover:text-white hover:bg-blue-600 dark:text-blue-400 dark:hover:text-blue-300 border border-blue-500 rounded"
                     >
                       Detail
                     </button>
+                  
                   </TableCell>
                 </TableRow>
               ))
