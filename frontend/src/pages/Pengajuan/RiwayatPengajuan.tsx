@@ -2,18 +2,21 @@ import { useState, useEffect } from "react";
 import { Table, TableHeader, TableBody, TableRow, TableCell } from "../../components/ui/table";
 import Badge from "../../components/ui/badge/Badge";
 import { Dialog } from "@headlessui/react";
+import { Link } from "react-router";
 
 interface Pengajuan {
-  id: number;
+  _id: number;
   nama: string;
   nik: string;
   alamat: string;
   statusTanah: string;
   tanggal: string;
   status: "pending" | "approved" | "rejected";
+  isGenerate: boolean;
 }
 
 export default function RiwayatPengajuan() {
+  
   const [dataPengajuan, setDataPengajuan] = useState<Pengajuan[]>([]);
   const [selectedPengajuan, setSelectedPengajuan] = useState<Pengajuan | null>(null);
 
@@ -22,14 +25,17 @@ export default function RiwayatPengajuan() {
 
     // Buat data jadi sesuai dengan interface, misalnya kasih ID dan status default
     const formattedData: Pengajuan[] = savedData.map((item: any, index: number) => ({
-      id: index + 1,
+      _id: item._id,
       nama: item.nama,
       nik: item.nik,
       alamat: item.alamat,
       statusTanah: item.statusTanah,
       tanggal: item.tanggal,
-      status: "pending", // default status
+      status: item.status??"Pending", // default status
+      isGenerate:item.isGenerate??false
+      
     }));
+    console.log(formattedData)
 
     setDataPengajuan(formattedData);
   }, []);
@@ -46,46 +52,86 @@ export default function RiwayatPengajuan() {
   };
 
   return (
-    <div className="p-6">
+    <div className="max-w-5xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-lg shadow">
       <h1 className="text-2xl font-semibold mb-4">Riwayat Pengajuan</h1>
 
-      <div className="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow">
-        <Table className="min-w-full divide-y divide-gray-200">
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>No</TableCell>
-              <TableCell isHeader>Nama</TableCell>
-              <TableCell isHeader>NIK</TableCell>
-              <TableCell isHeader>Alamat</TableCell>
-              <TableCell isHeader>Status Tanah</TableCell>
-              <TableCell isHeader>Tanggal</TableCell>
-              <TableCell isHeader>Status</TableCell>
-              <TableCell isHeader>Aksi</TableCell>
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+  <div className="max-w-full overflow-x-auto">
+    <Table className="min-w-full divide-y divide-gray-100 dark:divide-white/[0.05]">
+      <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+        <TableRow>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">No</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Nama</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">NIK</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Alamat</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Status Tanah</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Tanggal</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Status</TableCell>
+          <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 w-[250px]">Aksi</TableCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {dataPengajuan.length > 0 ? (
+          dataPengajuan.map((pengajuan, index) => (
+            <TableRow key={pengajuan._id}>
+              <TableCell className="px-5 py-4 sm:px-6 text-start">{index + 1}</TableCell>
+              <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{pengajuan.nama}</TableCell>
+              <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{pengajuan.nik}</TableCell>
+              <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{pengajuan.alamat}</TableCell>
+              <TableCell className="px-4 py-3 text-start">
+                <Badge
+                  size="sm"
+                  color={
+                    pengajuan.statusTanah === "Tersertifikasi"
+                      ? "success"
+                      : pengajuan.statusTanah === "Proses"
+                      ? "warning"
+                      : "info"
+                  }
+                >
+                  {pengajuan.statusTanah}
+                </Badge>
+              </TableCell>
+              <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{pengajuan.tanggal}</TableCell>
+              <TableCell className="px-4 py-3 text-start">
+                {pengajuan.status === "approved" ? (
+                  <span className="text-green-600 font-semibold flex items-center gap-1">✅ Disetujui</span>
+                ) : pengajuan.status === "rejected" ? (
+                  <span className="text-red-500 font-semibold flex items-center gap-1">❌ Ditolak</span>
+                ) : (
+                  <span className="text-yellow-500 font-semibold flex items-center gap-1">⏳ Menunggu</span>
+                )}
+              </TableCell>
+              <TableCell className="px-4 py-3 text-start">
+              <Link
+  to={`/pengajuan/${pengajuan._id}`}
+  className="px-3 py-1 text-sm text-blue-600 hover:text-white hover:bg-blue-600 dark:text-blue-400 rounded border border-blue-600 mr-2 dark:hover:text-blue-300"
+>
+  Lihat Detail
+</Link>
+{pengajuan.status === "approved" && !pengajuan.isGenerate &&(
+  <Link
+    to={`/generate-key/${pengajuan._id}`}
+    className="px-3 py-1 text-sm text-orange-600 hover:text-white hover:bg-orange-600 dark:text-orange-400 dark:hover:text-orange-300 border border-orange-500 rounded"
+  >
+    Generate key
+  </Link>
+)}
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {dataPengajuan.map((pengajuan, index) => (
-              <TableRow key={pengajuan.id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{pengajuan.nama}</TableCell>
-                <TableCell>{pengajuan.nik}</TableCell>
-                <TableCell>{pengajuan.alamat}</TableCell>
-                <TableCell>{pengajuan.statusTanah}</TableCell>
-                <TableCell>{pengajuan.tanggal}</TableCell>
-                <TableCell>{getStatusBadge(pengajuan.status)}</TableCell>
-                <TableCell>
-                  <button
-                    onClick={() => setSelectedPengajuan(pengajuan)}
-                    className="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-                  >
-                    Lihat Detail
-                  </button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={8} className="px-4 py-3 text-center text-gray-500 text-theme-sm dark:text-gray-400">
+              Tidak ada data pengajuan
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  </div>
+</div>
+
 
       {/* Modal Detail Pengajuan */}
       <Dialog

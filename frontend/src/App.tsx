@@ -23,6 +23,9 @@ import { AuthProvider } from "./context/AuthContext";
 import FormPengajuan from "./pages/Pengajuan/FormPengajuan";
 import RiwayatPengajuan from "./pages/Pengajuan/RiwayatPengajuan";
 import VerifikasiKecamatan from "./pages/Verifikasi/VerifikasiKecamatan";
+import DetailPengajuan from "./pages/Pengajuan/DetailPengajuan";
+import DetailVerifikasiKecamatanPage from "./pages/Verifikasi/DetailVerifikasiKecamatan";
+import GenerateKey from "./pages/Pengajuan/GenerateKey";
 
 export default function App() {
   // const isLoggedIn = !(localStorage.getItem("token")!=''|| localStorage.getItem("token")!= undefined) ;
@@ -43,6 +46,9 @@ export default function App() {
               <Route path="/pengajuan" element={<FormPengajuan />} />
               <Route path="/riwayat-pengajuan" element={<RiwayatPengajuan />} />
               <Route path="/verifikasi-kecamatan" element={<VerifikasiKecamatan />} />
+              <Route path="/pengajuan/:id" element={<DetailPengajuan />} />
+              <Route path="/kecamatan/detail/:id" element={<DetailVerifikasiKecamatanPage />} />
+              <Route path="/generate-key/:id" element={<GenerateKey />} />
 
               {/* Forms */}
               <Route path="/form-elements" element={<FormElements />} />

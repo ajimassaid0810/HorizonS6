@@ -10,18 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dfinity/agent": "^2.4.1",
+    "@dfinity/candid": "^2.4.1",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/list": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "@headlessui/react": "^2.2.2",
     "@react-jvectormap/core": "^1.0.4",
     "@react-jvectormap/world": "^1.1.2",
     "@reduxjs/toolkit": "^2.7.0",
     "apexcharts": "^4.1.0",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
+    "crypto-js": "^4.2.0",
     "flatpickr": "^4.6.13",
     "lottie-react": "^2.4.1",
     "react": "^19.0.0",
@@ -34,11 +38,13 @@
     "react-redux": "^9.2.0",
     "react-router": "^7.1.5",
     "swiper": "^11.2.3",
-    "tailwind-merge": "^3.0.1"
+    "tailwind-merge": "^3.0.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@tailwindcss/postcss": "^4.0.8",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.14.1",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",

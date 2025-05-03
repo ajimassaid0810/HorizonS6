@@ -5,13 +5,13 @@ import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { MoreDotIcon } from "../../icons";
 import { useState } from "react";
 
-export default function MonthlySalesChart() {
+export default function MonthlyCertificateChart() {
   const options: ApexOptions = {
-    colors: ["#465fff"],
+    colors: ["#465fff", "#ff6363", "#ffbc00"], // Added colors for approved, rejected, and in-progress
     chart: {
       fontFamily: "Outfit, sans-serif",
       type: "bar",
-      height: 180,
+      height: 300, // Height of the chart
       toolbar: {
         show: false,
       },
@@ -59,8 +59,11 @@ export default function MonthlySalesChart() {
       position: "top",
       horizontalAlign: "left",
       fontFamily: "Outfit",
+      markers: {
+      },
     },
     yaxis: {
+      max: 20, // Set the maximum value for Y-axis to 20
       title: {
         text: undefined,
       },
@@ -75,22 +78,34 @@ export default function MonthlySalesChart() {
     fill: {
       opacity: 1,
     },
-
     tooltip: {
       x: {
         show: false,
       },
       y: {
-        formatter: (val: number) => `${val}`,
+        formatter: (val: number, { seriesIndex }: { seriesIndex: number }) => {
+          const status = ["Approved", "Rejected", "In Progress"];
+          return `${status[seriesIndex]}: ${val}`;
+        },
       },
     },
   };
+
   const series = [
     {
-      name: "Sales",
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      name: "Approved",
+      data: [8, 15, 6, 10, 8, 9, 7, 8, 6, 13, 11, 10], // Example data for approved
+    },
+    {
+      name: "Rejected",
+      data: [2, 3, 1, 2, 1, 1, 2, 1, 2, 3, 2, 1], // Example data for rejected
+    },
+    {
+      name: "In Progress",
+      data: [4, 2, 3, 3, 4, 3, 4, 3, 3, 4, 3, 4], // Example data for in-progress
     },
   ];
+
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
@@ -100,11 +115,12 @@ export default function MonthlySalesChart() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-          Monthly Sales
+          Monthly Certificate Progress
         </h3>
         <div className="relative inline-block">
           <button className="dropdown-toggle" onClick={toggleDropdown}>
@@ -132,8 +148,8 @@ export default function MonthlySalesChart() {
       </div>
 
       <div className="max-w-full overflow-x-auto custom-scrollbar">
-        <div className="-ml-5 min-w-[650px] xl:min-w-full pl-2">
-          <Chart options={options} series={series} type="bar" height={180} />
+        <div className="-ml-5 min-w-[850px] xl:min-w-full pl-2">
+          <Chart options={options} series={series} type="bar" height={300} />
         </div>
       </div>
     </div>
